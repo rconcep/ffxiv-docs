@@ -59,7 +59,7 @@
 <span class="sd">    SAM</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_gcd</span><span class="o">=</span><span class="mf">2.40</span><span class="p">,</span> <span class="n">kenki_mastery</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_gcd</span><span class="o">=</span><span class="mf">2.40</span><span class="p">,</span> <span class="n">kenki_mastery</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kenki_gauge</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for an instance of the Samurai class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -69,7 +69,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_kenki_mastery</span> <span class="o">=</span> <span class="n">kenki_mastery</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_potency_mod</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_kenki_gauge</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kenki_gauge</span> <span class="o">=</span> <span class="n">kenki_gauge</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_has_jinpu</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_has_shifu</span> <span class="o">=</span> <span class="kc">False</span>
@@ -312,12 +312,14 @@
 <div class="viewcode-block" id="Samurai.inc_kenki_gauge"><a class="viewcode-back" href="../samurai.html#samurai.Samurai.inc_kenki_gauge">[docs]</a>    <span class="k">def</span> <span class="nf">inc_kenki_gauge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inc_amt</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Changes the Kenki gauge amount by inc_amt.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">inc_amt</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_kenki_gauge</span> <span class="o">+=</span> <span class="n">inc_amt</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">+=</span> <span class="n">inc_amt</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kenki_gauge</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kenki_gauge</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">=</span> <span class="mi">100</span></div>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Must provide int to change Kenki gauge by!&#39;</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">has_jinpu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -526,7 +528,6 @@
 
 <span class="sd">        **Additional Effect**: Increases Kenki Gauge by 5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">potency</span> <span class="o">=</span> <span class="mi">150</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_yukikaze</span> <span class="o">=</span> <span class="kc">True</span>
@@ -554,7 +555,6 @@
 
 <span class="sd">        **Combo Bonus**: Increases Kenki Gauge by 5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_jinpu</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">280</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_jinpu</span> <span class="o">=</span> <span class="kc">True</span>
@@ -585,7 +585,6 @@
 
 <span class="sd">        **Combo Bonus**: Grants Getsu</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_gekko</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">400</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_getsu</span> <span class="o">=</span> <span class="kc">True</span>
@@ -614,7 +613,6 @@
 
 <span class="sd">        **Combo Bonus**: Increases Kenki Gauge by 5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_shifu</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">280</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_shifu</span> <span class="o">=</span> <span class="kc">True</span>
@@ -645,7 +643,6 @@
 
 <span class="sd">        **Combo Bonus**: Grants Ka</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_kasha</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">400</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_ka</span> <span class="o">=</span> <span class="kc">True</span>
@@ -675,7 +672,6 @@
 
 <span class="sd">        **Combo Bonus**: Grants Setsu</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_yukikaze</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">340</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">applied_yukikaze</span> <span class="o">=</span> <span class="kc">True</span>
@@ -701,7 +697,6 @@
 
 <span class="sd">        **Additional Effect**: Increases Kenki Gauge by 5</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_mangetsu</span> <span class="o">=</span> <span class="kc">True</span>
@@ -727,20 +722,21 @@
 
 <span class="sd">        **Combo Bonus**: Grants Ka</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_potency</span> <span class="o">=</span> <span class="mi">200</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_oka</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">n_targets</span><span class="o">-</span><span class="mi">5</span><span class="p">))</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">n_targets</span><span class="o">-</span><span class="mi">5</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">has_ka</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -766,20 +762,21 @@
 
 <span class="sd">        **Combo Bonus**: Grants Getsu</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_potency</span> <span class="o">=</span> <span class="mi">200</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_mangetsu</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">n_targets</span><span class="o">-</span><span class="mi">5</span><span class="p">))</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">n_targets</span><span class="o">-</span><span class="mi">5</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">200</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">has_getsu</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -800,7 +797,6 @@
 
 <span class="sd">        **Additional Effect**: Increases Kenki Gauge by 10</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enhanced_enbi</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">300</span>
         <span class="k">else</span><span class="p">:</span>
@@ -852,20 +848,21 @@
 <span class="sd">        Delivers an attack to all nearby enemies with a potency of 360 for the first enemy, 10% less for the second,</span>
 <span class="sd">        20% less for the third, 30% less for the fourth, 40% less for the fifth, and 50% less for all remaining enemies.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_potency</span> <span class="o">=</span> <span class="mi">360</span>
 
         <span class="k">if</span> <span class="nb">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">has_getsu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_setsu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_ka</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">360</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">n_targets</span><span class="o">-</span><span class="mi">5</span><span class="p">))</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">n_targets</span><span class="o">-</span><span class="mi">5</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="mf">0.7</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span> <span class="o">+</span> <span class="mf">0.8</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">360</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mf">0.9</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">360</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not enough Sen opened!&#39;</span><span class="p">)</span>
 
@@ -875,7 +872,6 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Delivers an attack with a potency of 720.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="k">if</span> <span class="nb">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">has_getsu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_setsu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_ka</span><span class="p">])</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">720</span>
         <span class="k">else</span><span class="p">:</span>
@@ -995,7 +991,6 @@
 <span class="sd">        Converts Setsu, Getsu, and Ka into Kenki. Each Sen converted increases your Kenki Gauge by 20. Can only be</span>
 <span class="sd">        executed if under the effect of at least one of the three statuses.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">sen_total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">has_setsu</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_getsu</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_ka</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">sen_total</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -1020,7 +1015,6 @@
 
 <span class="sd">        **Kenki Gauge Cost**: 20</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">kenki_cost</span> <span class="o">=</span> <span class="mi">20</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">&gt;=</span> <span class="n">kenki_cost</span><span class="p">:</span>
@@ -1042,7 +1036,6 @@
 
 <span class="sd">        Cannot be executed while bound.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
         <span class="n">kenki_cost</span> <span class="o">=</span> <span class="mi">10</span>
 
@@ -1068,7 +1061,6 @@
 
 <span class="sd">        Cannot be executed while bound.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
         <span class="n">kenki_cost</span> <span class="o">=</span> <span class="mi">10</span>
 
@@ -1089,7 +1081,6 @@
 
 <span class="sd">        **Kenki Gauge Cost**: 25</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">potency</span> <span class="o">=</span> <span class="mi">300</span>
         <span class="n">kenki_cost</span> <span class="o">=</span> <span class="mi">25</span>
 
@@ -1109,7 +1100,6 @@
 
 <span class="sd">        **Kenki Gauge Cost**: 25</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="n">potency</span> <span class="o">=</span> <span class="n">n_targets</span><span class="o">*</span><span class="mi">150</span>
         <span class="n">kenki_cost</span> <span class="o">=</span> <span class="mi">25</span>
 
@@ -1131,16 +1121,18 @@
 
 <span class="sd">        **Kenki Gauge Cost**: 50</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">base_potency</span> <span class="o">=</span> <span class="mi">800</span>
+        <span class="n">kenki_cost</span> <span class="o">=</span> <span class="mi">50</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span> <span class="o">&gt;=</span> <span class="n">kenki_cost</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="o">-</span><span class="n">kenki_cost</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">800</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mf">0.75</span><span class="o">+</span><span class="mf">0.50</span><span class="o">*</span><span class="p">(</span><span class="n">n_targets</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mf">0.75</span><span class="o">+</span><span class="mf">0.50</span><span class="o">*</span><span class="p">(</span><span class="n">n_targets</span><span class="o">-</span><span class="mi">2</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">n_targets</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">800</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mf">0.75</span><span class="p">)</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="mf">0.75</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">potency</span> <span class="o">=</span> <span class="mi">800</span>
+                <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span>
 
             <span class="k">return</span> <span class="n">potency</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod</span>
         <span class="k">else</span><span class="p">:</span>
