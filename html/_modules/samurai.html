@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
   </head>
@@ -56,7 +56,13 @@
 
 <div class="viewcode-block" id="Samurai"><a class="viewcode-back" href="../samurai.html#samurai.Samurai">[docs]</a><span class="k">class</span> <span class="nc">Samurai</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    SAM</span>
+<span class="sd">    Far across the rolling waves, towards the rising sun, there lies the island nation of Hingashi.</span>
+<span class="sd">    </span>
+<span class="sd">    In the distant past, the realm&#39;s great lords vied for supremacy over its sea-girt confines in a long and bloody conflict. And taking to battle in their lieges&#39; names were noble swordsmen whose art was forged in the crucible of war: the samurai.</span>
+<span class="sd">    </span>
+<span class="sd">    Eventually, the nation was unified under one banner, and these warriors came to wield their katana not upon fields as part of an army, but upon streets as protectors of the peace.</span>
+<span class="sd">    </span>
+<span class="sd">    But as a neglected blade grows dull with rust, so too do men forget their purpose. Amidst waning memories of the old ways, a determined few hold fast to their convictions, hands by katana grips, awaiting the moment for steel to sing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_gcd</span><span class="o">=</span><span class="mf">2.40</span><span class="p">,</span> <span class="n">kenki_mastery</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kenki_gauge</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -93,7 +99,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_combo_act_oka</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_combo_act_yukikaze</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_enhanced_enbi</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_enhanced_enpi</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_open_eyes</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="Samurai.parse_rotation"><a class="viewcode-back" href="../samurai.html#samurai.Samurai.parse_rotation">[docs]</a>    <span class="k">def</span> <span class="nf">parse_rotation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -121,9 +127,16 @@
         <span class="n">higanbana_timer</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">shifu_timer</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">jinpu_timer</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">yukikaze_timer</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">applied_yukikaze</span><span class="p">:</span>
+            <span class="n">yukikaze_timer</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">yukikaze_timer</span> <span class="o">=</span> <span class="mi">30</span>
 
         <span class="n">current_time</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="c1"># string translator for text parsing</span>
+        <span class="n">translator</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">rotation</span><span class="p">)):</span>
             <span class="n">gcd</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
@@ -136,7 +149,7 @@
                 <span class="n">ability</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="c1"># convert input text to lowercase, replace punctuation, and replace spaces with underscores</span>
-            <span class="n">parsed_ws</span> <span class="o">=</span> <span class="n">weaponskill</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+            <span class="n">parsed_ws</span> <span class="o">=</span> <span class="n">weaponskill</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">translator</span><span class="p">)</span>
 
             <span class="c1"># record buff status at beginning of GCD</span>
             <span class="n">buff_status</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">has_jinpu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_shifu</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">applied_yukikaze</span><span class="p">,</span>
@@ -157,7 +170,7 @@
                                    <span class="o">+</span> <span class="n">buff_status</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># convert input text to lowercase, replace punctuation, and replace spaces with underscores</span>
-                <span class="n">parsed_ability</span> <span class="o">=</span> <span class="n">ability</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)</span>
+                <span class="n">parsed_ability</span> <span class="o">=</span> <span class="n">ability</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">translator</span><span class="p">)</span>
 
                 <span class="n">parsed_gcds</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_time</span><span class="p">,</span> <span class="n">weaponskill</span><span class="p">,</span> <span class="n">ability</span><span class="p">,</span> <span class="n">ws_potency</span>
                                     <span class="o">+</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_ability</span><span class="p">)(</span><span class="n">n_targets</span><span class="p">)</span>
@@ -189,7 +202,9 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">applied_higanbana</span> <span class="o">=</span> <span class="n">n_targets</span>
 
             <span class="c1"># update counters</span>
-            <span class="n">meikyo_shisui_counter</span> <span class="o">-=</span> <span class="mi">1</span>  <span class="c1"># expended one Meikyo Shisui charge</span>
+            <span class="k">if</span> <span class="n">parsed_ws</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;higanbana&#39;</span><span class="p">,</span> <span class="s1">&#39;tenka goken&#39;</span><span class="p">,</span> <span class="s1">&#39;midare setsugekka&#39;</span><span class="p">]):</span>
+                <span class="c1"># Iaijutsu does not consume a Meikyo Shisui charge</span>
+                <span class="n">meikyo_shisui_counter</span> <span class="o">-=</span> <span class="mi">1</span>  <span class="c1"># expended one Meikyo Shisui charge</span>
 
             <span class="k">if</span> <span class="n">meikyo_shisui_counter</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="c1"># deactivate Meikyo Shisui if all charges expended</span>
@@ -197,8 +212,8 @@
 
             <span class="k">if</span> <span class="n">parsed_ws</span> <span class="o">==</span> <span class="s1">&#39;higanbana&#39;</span><span class="p">:</span>
                 <span class="c1"># start Higanbana DoT timer</span>
-                <span class="c1"># accounts for cast time; scaling derived from leaked tooltip</span>
-                <span class="n">higanbana_timer</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">+</span> <span class="mf">1.73</span><span class="o">/</span><span class="mf">2.41</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">current_gcd</span>
+                <span class="c1"># accounts for cast time</span>
+                <span class="n">higanbana_timer</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">+</span> <span class="mf">1.8</span><span class="o">/</span><span class="mf">2.5</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">current_gcd</span>
 
             <span class="k">if</span> <span class="n">parsed_ws</span> <span class="o">==</span> <span class="s1">&#39;shifu&#39;</span><span class="p">:</span>
                 <span class="c1"># start Shifu buff timer</span>
@@ -501,12 +516,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_combo_act_yukikaze</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">enhanced_enbi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;If the Enhanced Enbi status is active.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">enhanced_enpi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;If the Enhanced Enpi status is active.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enhanced_enbi</span>
 
-    <span class="nd">@enhanced_enbi</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">enhanced_enbi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="nd">@enhanced_enpi</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">enhanced_enpi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_enhanced_enbi</span> <span class="o">=</span> <span class="n">value</span>
 
@@ -787,7 +802,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod</span><span class="o">*</span><span class="n">potency</span></div>
 
-<div class="viewcode-block" id="Samurai.enbi"><a class="viewcode-back" href="../samurai.html#samurai.Samurai.enbi">[docs]</a>    <span class="k">def</span> <span class="nf">enbi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Samurai.enpi"><a class="viewcode-back" href="../samurai.html#samurai.Samurai.enpi">[docs]</a>    <span class="k">def</span> <span class="nf">enpi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        lvl 15</span>
 
@@ -879,13 +894,13 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod</span><span class="o">*</span><span class="n">potency</span></div>
 
-<div class="viewcode-block" id="Samurai.starry_eyes"><a class="viewcode-back" href="../samurai.html#samurai.Samurai.starry_eyes">[docs]</a>    <span class="k">def</span> <span class="nf">starry_eyes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="Samurai.hissatsu_seigan"><a class="viewcode-back" href="../samurai.html#samurai.Samurai.hissatsu_seigan">[docs]</a>    <span class="k">def</span> <span class="nf">hissatsu_seigan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        lvl 66</span>
 
 <span class="sd">        Delivers an attack with a potency of 200.</span>
 
-<span class="sd">        **Kenki Gauge Cost**: 25</span>
+<span class="sd">        **Kenki Gauge Cost**: 15</span>
 
 <span class="sd">        Can only be executed while under the effect of Open Eyes.</span>
 
@@ -1009,7 +1024,7 @@
 
 <span class="sd">        **Recast**: 5s</span>
 
-<span class="sd">        Increases potency of next weaponskill by 150%.</span>
+<span class="sd">        Increases potency of next weaponskill by 50%.</span>
 
 <span class="sd">        **Duration**: 10s</span>
 
@@ -1055,7 +1070,7 @@
 
 <span class="sd">        **Additional Effect**: 10-yalm backstep</span>
 
-<span class="sd">        **Additional Effect**: Grants Enhanced Enbi</span>
+<span class="sd">        **Additional Effect**: Grants Enhanced Enpi</span>
 
 <span class="sd">        **Kenki Gauge Cost**: 10</span>
 
@@ -1151,7 +1166,7 @@
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, rconcep.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>
 </html>

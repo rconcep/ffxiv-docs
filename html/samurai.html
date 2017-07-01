@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Plotting/visualization utilities" href="plotting.html" />
@@ -54,7 +54,10 @@
 <dl class="class">
 <dt id="samurai.Samurai">
 <em class="property">class </em><code class="descclassname">samurai.</code><code class="descname">Samurai</code><span class="sig-paren">(</span><em>base_gcd=2.4</em>, <em>kenki_mastery=False</em>, <em>kenki_gauge=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/samurai.html#Samurai"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#samurai.Samurai" title="Permalink to this definition">¶</a></dt>
-<dd><p>SAM</p>
+<dd><p>Far across the rolling waves, towards the rising sun, there lies the island nation of Hingashi.</p>
+<p>In the distant past, the realm&#8217;s great lords vied for supremacy over its sea-girt confines in a long and bloody conflict. And taking to battle in their lieges&#8217; names were noble swordsmen whose art was forged in the crucible of war: the samurai.</p>
+<p>Eventually, the nation was unified under one banner, and these warriors came to wield their katana not upon fields as part of an army, but upon streets as protectors of the peace.</p>
+<p>But as a neglected blade grows dull with rust, so too do men forget their purpose. Amidst waning memories of the old ways, a determined few hold fast to their convictions, hands by katana grips, awaiting the moment for steel to sing.</p>
 <dl class="method">
 <dt id="samurai.Samurai.ageha">
 <code class="descname">ageha</code><span class="sig-paren">(</span><em>n_targets=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/samurai.html#Samurai.ageha"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#samurai.Samurai.ageha" title="Permalink to this definition">¶</a></dt>
@@ -67,8 +70,8 @@
 </dd></dl>
 
 <dl class="method">
-<dt id="samurai.Samurai.enbi">
-<code class="descname">enbi</code><span class="sig-paren">(</span><em>n_targets=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/samurai.html#Samurai.enbi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#samurai.Samurai.enbi" title="Permalink to this definition">¶</a></dt>
+<dt id="samurai.Samurai.enpi">
+<code class="descname">enpi</code><span class="sig-paren">(</span><em>n_targets=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/samurai.html#Samurai.enpi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#samurai.Samurai.enpi" title="Permalink to this definition">¶</a></dt>
 <dd><p>lvl 15</p>
 <p>Delivers a ranged attack with a potency of 100.</p>
 <p><strong>Yaten Bonus Potency</strong>: 300</p>
@@ -151,7 +154,7 @@ executed if under the effect of at least one of the three statuses.</p>
 <code class="descname">hissatsu_kaiten</code><span class="sig-paren">(</span><em>n_targets=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/samurai.html#Samurai.hissatsu_kaiten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#samurai.Samurai.hissatsu_kaiten" title="Permalink to this definition">¶</a></dt>
 <dd><p>lvl 52</p>
 <p><strong>Recast</strong>: 5s</p>
-<p>Increases potency of next weaponskill by 150%.</p>
+<p>Increases potency of next weaponskill by 50%.</p>
 <p><strong>Duration</strong>: 10s</p>
 <p><strong>Kenki Gauge Cost</strong>: 20</p>
 </dd></dl>
@@ -163,6 +166,16 @@ executed if under the effect of at least one of the three statuses.</p>
 <p><strong>Recast</strong>: 1s</p>
 <p>Delivers an attack with a potency of 150 to all nearby enemies.</p>
 <p><strong>Kenki Gauge Cost</strong>: 25</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="samurai.Samurai.hissatsu_seigan">
+<code class="descname">hissatsu_seigan</code><span class="sig-paren">(</span><em>n_targets=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/samurai.html#Samurai.hissatsu_seigan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#samurai.Samurai.hissatsu_seigan" title="Permalink to this definition">¶</a></dt>
+<dd><p>lvl 66</p>
+<p>Delivers an attack with a potency of 200.</p>
+<p><strong>Kenki Gauge Cost</strong>: 15</p>
+<p>Can only be executed while under the effect of Open Eyes.</p>
+<p>Shares a recast timer with Merciful Eyes.</p>
 </dd></dl>
 
 <dl class="method">
@@ -181,7 +194,7 @@ executed if under the effect of at least one of the three statuses.</p>
 <p><strong>Recast</strong>: 10s</p>
 <p>Delivers an attack with a potency of 100.</p>
 <p><strong>Additional Effect</strong>: 10-yalm backstep</p>
-<p><strong>Additional Effect</strong>: Grants Enhanced Enbi</p>
+<p><strong>Additional Effect</strong>: Grants Enhanced Enpi</p>
 <p><strong>Kenki Gauge Cost</strong>: 10</p>
 <p>Cannot be executed while bound.</p>
 </dd></dl>
@@ -332,16 +345,6 @@ and auto-attack delay by 10%</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="samurai.Samurai.starry_eyes">
-<code class="descname">starry_eyes</code><span class="sig-paren">(</span><em>n_targets=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/samurai.html#Samurai.starry_eyes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#samurai.Samurai.starry_eyes" title="Permalink to this definition">¶</a></dt>
-<dd><p>lvl 66</p>
-<p>Delivers an attack with a potency of 200.</p>
-<p><strong>Kenki Gauge Cost</strong>: 25</p>
-<p>Can only be executed while under the effect of Open Eyes.</p>
-<p>Shares a recast timer with Merciful Eyes.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="samurai.Samurai.tenka_goken">
 <code class="descname">tenka_goken</code><span class="sig-paren">(</span><em>n_targets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/samurai.html#Samurai.tenka_goken"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#samurai.Samurai.tenka_goken" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delivers an attack to all nearby enemies with a potency of 360 for the first enemy, 10% less for the second,
@@ -437,9 +440,9 @@ and auto-attack delay by 10%</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="samurai.Samurai.enhanced_enbi">
-<code class="descname">enhanced_enbi</code><a class="headerlink" href="#samurai.Samurai.enhanced_enbi" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the Enhanced Enbi status is active.</p>
+<dt id="samurai.Samurai.enhanced_enpi">
+<code class="descname">enhanced_enpi</code><a class="headerlink" href="#samurai.Samurai.enhanced_enpi" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the Enhanced Enpi status is active.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -528,7 +531,7 @@ and auto-attack delay by 10%</p>
 
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, rconcep.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.6.
     </div>
   </body>
 </html>
