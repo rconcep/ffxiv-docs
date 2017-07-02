@@ -49,9 +49,91 @@
       <div class="content">
         
         
-  <div class="section" id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<p>Tutorial goes here.</p>
+  <div class="section" id="module-samurai">
+<span id="tutorial"></span><h1>Tutorial<a class="headerlink" href="#module-samurai" title="Permalink to this headline">¶</a></h1>
+<p>The Samurai class is intended to represent a samurai player in combat. Features include:</p>
+<ul class="simple">
+<li>Checking for the appropriate amount of Sen opened when using Iaijutsu.</li>
+<li>Checking for the appropriate amount of Kenki when using Kenki spenders.</li>
+<li>Combo bonuses applied when appropriate.</li>
+<li>Buff applications adjusting outgoing potency and GCD length.</li>
+</ul>
+<p>It <strong>does not</strong> include:</p>
+<ul class="simple">
+<li>Correctly breaking combos.<ul>
+<li>e.g., You use Hakaze -&gt; Shifu -&gt; Hakaze -&gt; Kasha. The combo bonus for Kasha will still apply.</li>
+<li>However, doing something like Hakaze -&gt; Yukikaze -&gt; Yukikaze will correctly not apply the combo bonus to the second Yukikaze. Obviously, this does not apply to Meikyo Shisui.</li>
+<li>This behavior was not implemented because it is illogical to do in practice.</li>
+</ul>
+</li>
+<li>Applying slashing resistance down to multiple targets.<ul>
+<li>If Yukikaze is used in multiple target scenarios, the damage increase will be applied to all targets.</li>
+<li>This behavior was not implemented because it is not something you should do in practice.</li>
+</ul>
+</li>
+<li>Cooldown timer tracking.<ul>
+<li>Jinpu, Shifu, Yukikaze, and Higanbana DoT timers are supported.</li>
+<li>However, it is up to the user to keep track of the cooldown of abilities.<ul>
+<li>Meikyo Shisui, Hagakure, Hissatsu: Guren, Hissatsu: Kaiten, etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Auto attacks.<ul>
+<li>This class is only intended to analyze potency per second of different weaponskill/ability rotations.</li>
+</ul>
+</li>
+<li>The effect of attack power, critical hit, direct hit, determination, and damage per second calculations. Additionally, the effect of external buffs.<ul>
+<li>The impact of primary/secondary stats on DPS require damage formula implementation.</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>To use this class, first you must import the class from its module and then create an instance of it:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">samurai</span> <span class="k">import</span> <span class="n">Samurai</span>
+
+<span class="n">my_first_samurai</span> <span class="o">=</span> <span class="n">Samurai</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>There are a number of keyword arguments that may be used to modify the initial state of the Samurai instance.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">my_first_samurai</span> <span class="o">=</span> <span class="n">Samurai</span><span class="p">(</span><span class="n">base_gcd</span><span class="o">=</span><span class="mf">2.40</span><span class="p">,</span> <span class="n">kenki_mastery</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">kenki_gauge</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="samurai.html#samurai.Samurai.base_gcd" title="samurai.Samurai.base_gcd"><code class="xref py py-attr docutils literal"><span class="pre">Samurai.base_gcd</span></code></a> is set as 2.40s by default. <a class="reference internal" href="samurai.html#samurai.Samurai.kenki_mastery" title="samurai.Samurai.kenki_mastery"><code class="xref py py-attr docutils literal"><span class="pre">Samurai.kenki_mastery</span></code></a> is set to 0 by default, meaning no Kenki Mastery trait is active. Values of 1 and 2 correspond to the Mastery I and II traits, respectively. Note that these two attributes may only be set upon initialization and cannot be changed.</p>
+<p><a class="reference internal" href="samurai.html#samurai.Samurai.kenki_gauge" title="samurai.Samurai.kenki_gauge"><code class="xref py py-attr docutils literal"><span class="pre">Samurai.kenki_gauge</span></code></a> is set to 0 initially be default but may be set to a valid amount upon initialization or anytime afterwards.</p>
+<p>After initialization, other initial conditions may be set prior to simulated combat. For example, to use Meikyo Shisui before the encounter starts:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">my_first_samurai</span> <span class="o">=</span> <span class="n">Samurai</span><span class="p">(</span><span class="n">kenki_mastery</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">my_first_samurai</span><span class="o">.</span><span class="n">meikyo_shisui</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will trigger the effect of <a class="reference internal" href="samurai.html#samurai.Samurai.meikyo_shisui" title="samurai.Samurai.meikyo_shisui"><code class="xref py py-meth docutils literal"><span class="pre">Samurai.meikyo_shisui()</span></code></a>. To simulate the slashing resistance debuff being already applied:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">my_first_samurai</span><span class="o">.</span><span class="n">applied_yukikaze</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>The heart of this simulation tool is the <a class="reference internal" href="samurai.html#samurai.Samurai.parse_rotation" title="samurai.Samurai.parse_rotation"><code class="xref py py-meth docutils literal"><span class="pre">Samurai.parse_rotation()</span></code></a> class method. This method takes an input list of tuples describing the rotation to be simulated and tracks buffs/debuffs, Kenki, Sen, and output potency over time. It may be used to simulate against single or multiple targets. For example, to simulate the Gekko combo against a single target:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">my_first_samurai</span> <span class="o">=</span> <span class="n">Samurai</span><span class="p">(</span><span class="n">kenki_mastery</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">action_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Hakaze&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Jinpu&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Gekko&#39;</span><span class="p">)]</span>
+
+<span class="n">out_dataframe</span><span class="p">,</span> <span class="n">out_avg_potency</span><span class="p">,</span> <span class="n">out_potency_ps</span> <span class="o">=</span> <span class="n">my_first_samurai</span><span class="o">.</span><span class="n">parse_rotation</span><span class="p">(</span><span class="n">action_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The method output consists of a Pandas DataFrame object describing the simulated rotation, the average potency per GCD, and the average potency per second. The output DataFrame is compatible with the included visualization utilities in <a class="reference internal" href="plotting.html#module-plotting" title="plotting"><code class="xref py py-mod docutils literal"><span class="pre">plotting</span></code></a> but is also viewable just by using <code class="xref py py-func docutils literal"><span class="pre">print()</span></code> or <code class="xref py py-func docutils literal"><span class="pre">display()</span></code> in Jupyter notebooks.</p>
+<p>The action list provided to the <code class="xref py py-meth docutils literal"><span class="pre">parse_rotation()</span></code> method consists of tuples with the format:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">weaponskill_1</span><span class="p">,</span> <span class="n">ability_1</span><span class="p">),</span> <span class="o">...</span><span class="p">,</span> <span class="p">(</span><span class="n">weaponskill_N</span><span class="p">,</span> <span class="n">ability_N</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>where the weaponskills and abilities are provided as strings. The ability is considered to be used during the GCD of the corresponding weaponskill. An ability does not have to be provided. Here is an example of simulating a scenario with multiple targets:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">n_targets</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">my_first_samurai</span> <span class="o">=</span> <span class="n">Samurai</span><span class="p">(</span><span class="n">kenki_mastery</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_targets</span><span class="o">=</span><span class="n">n_targets</span><span class="p">)</span>
+
+<span class="n">action_list</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;Fuga&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Oka&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Fuga&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Mangetsu&#39;</span><span class="p">,</span> <span class="s1">&#39;Hissatsu: Kaiten&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Tenka Goken&#39;</span><span class="p">)]</span>
+
+<span class="n">out_dataframe</span><span class="p">,</span> <span class="n">out_avg_potency</span><span class="p">,</span> <span class="n">out_potency_ps</span> <span class="o">=</span> <span class="n">my_first_samurai</span><span class="o">.</span><span class="n">parse_rotation</span><span class="p">(</span><span class="n">action_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
