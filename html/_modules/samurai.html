@@ -65,7 +65,7 @@
 <span class="sd">    But as a neglected blade grows dull with rust, so too do men forget their purpose. Amidst waning memories of the old ways, a determined few hold fast to their convictions, hands by katana grips, awaiting the moment for steel to sing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_gcd</span><span class="o">=</span><span class="mf">2.40</span><span class="p">,</span> <span class="n">kenki_mastery</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">kenki_gauge</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_gcd</span><span class="o">=</span><span class="mf">2.40</span><span class="p">,</span> <span class="n">kenki_mastery</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">kenki_gauge</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for an instance of the Samurai class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -289,7 +289,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">kenki_mastery</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Kenki Mastery II trait is active if True; False if Kenki Mastery I only.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Kenki Mastery trait. 0 if none, 1 if I, 2 if II.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kenki_mastery</span>
 
     <span class="nd">@kenki_mastery</span><span class="o">.</span><span class="n">setter</span>
@@ -549,7 +549,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_shifu</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_jinpu</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod</span><span class="o">*</span><span class="n">potency</span></div>
@@ -574,7 +574,7 @@
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">280</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_jinpu</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_gekko</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
@@ -603,7 +603,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_gekko</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">400</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_getsu</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
 
@@ -632,7 +635,7 @@
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">280</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_shifu</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_kasha</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
@@ -661,7 +664,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_kasha</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">400</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_ka</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
 
@@ -691,14 +697,16 @@
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">340</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">applied_yukikaze</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">has_setsu</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
 
         <span class="n">potency</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod</span><span class="o">*</span><span class="n">potency</span> <span class="c1"># don&#39;t want updated potency before effect is applied</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_yukikaze</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="c1"># add status to target?</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod_update</span><span class="p">()</span>
 
@@ -717,7 +725,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_mangetsu</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">combo_act_oka</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod</span><span class="o">*</span><span class="n">potency</span><span class="o">*</span><span class="n">n_targets</span></div>
@@ -754,7 +762,10 @@
                 <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">has_ka</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
 
@@ -794,7 +805,10 @@
                 <span class="n">potency</span> <span class="o">=</span> <span class="n">base_potency</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">has_getsu</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
 
@@ -812,15 +826,17 @@
 
 <span class="sd">        **Additional Effect**: Increases Kenki Gauge by 10</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enhanced_enbi</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enhanced_enpi</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">300</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">potency</span> <span class="o">=</span> <span class="mi">100</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">enhanced_enbi</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enhanced_enpi</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_mastery</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod</span><span class="o">*</span><span class="n">potency</span></div>
 
@@ -850,11 +866,8 @@
 <span class="sd">        DoT component of Higanbana.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">avg_mod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_gcd</span><span class="o">/</span><span class="mf">3.0</span>  <span class="c1"># this averages the DoT potency per GCD (3 second ticks)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_jinpu</span><span class="p">:</span>
-            <span class="n">potency</span> <span class="o">=</span> <span class="n">JINPU_MOD</span><span class="o">*</span><span class="mi">35</span><span class="o">*</span><span class="n">avg_mod</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">potency</span> <span class="o">=</span> <span class="mi">35</span><span class="o">*</span><span class="n">avg_mod</span>
+        
+        <span class="n">potency</span> <span class="o">=</span> <span class="mi">35</span><span class="o">*</span><span class="n">avg_mod</span>
 
         <span class="k">return</span> <span class="n">potency</span></div>
 
@@ -944,6 +957,9 @@
 
 <span class="sd">        Cancels auto-attack upon execution.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">inc_kenki_gauge</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+        
         <span class="k">return</span> <span class="mi">0</span></div>
 
 <div class="viewcode-block" id="Samurai.merciful_eyes"><a class="viewcode-back" href="../samurai.html#samurai.Samurai.merciful_eyes">[docs]</a>    <span class="k">def</span> <span class="nf">merciful_eyes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1152,7 +1168,6 @@
             <span class="k">return</span> <span class="n">potency</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">potency_mod</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not enough Kenki available!&#39;</span><span class="p">)</span></div></div>
-
 </pre></div>
 
       </div>
