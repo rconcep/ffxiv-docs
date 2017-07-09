@@ -121,6 +121,7 @@
 
         <span class="n">parsed_gcds</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">snapshot_dot_modifier</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dot_mod</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="n">n_applied_higanbana</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">meikyo_shisui_counter</span> <span class="o">=</span> <span class="mi">3</span>
 
@@ -143,10 +144,10 @@
 
             <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">gcd</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">tuple</span><span class="p">:</span>
                 <span class="n">weaponskill</span> <span class="o">=</span> <span class="n">gcd</span>
-                <span class="n">ability</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">abilities</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">weaponskill</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">ability</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">abilities</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
             <span class="c1"># convert input text to lowercase, replace punctuation, and replace spaces with underscores</span>
             <span class="n">parsed_ws</span> <span class="o">=</span> <span class="n">weaponskill</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">translator</span><span class="p">)</span>
@@ -156,50 +157,56 @@
                            <span class="bp">self</span><span class="o">.</span><span class="n">applied_higanbana</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kenki_gauge</span><span class="p">)</span>
 
             <span class="c1"># compute potency of weaponskill</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_hissatsu_kaiten</span><span class="p">:</span>
-                <span class="c1"># Hissatsu: Kaiten buff is active; apply increased potency</span>
-                <span class="n">ws_potency</span> <span class="o">=</span> <span class="n">KAITEN_MOD</span><span class="o">*</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_ws</span><span class="p">)(</span><span class="n">n_targets</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">has_hissatsu_kaiten</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">ws_mod</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">ws_mod</span> <span class="o">=</span> <span class="n">KAITEN_MOD</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_hissatsu_kaiten</span> <span class="k">else</span> <span class="mf">1.0</span>
+            
+            <span class="k">if</span> <span class="n">parsed_ws</span> <span class="o">!=</span> <span class="s1">&#39;higanbana&#39;</span><span class="p">:</span>
+                <span class="n">ws_potency</span> <span class="o">=</span> <span class="n">ws_mod</span><span class="o">*</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_ws</span><span class="p">)(</span><span class="n">n_targets</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">ws_potency</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_ws</span><span class="p">)(</span><span class="n">n_targets</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">ability</span><span class="p">:</span>
-                <span class="c1"># use empty string to fill the ability value</span>
-                <span class="n">parsed_gcds</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_time</span><span class="p">,</span> <span class="n">weaponskill</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ws_potency</span>
-                                    <span class="o">+</span> <span class="n">snapshot_dot_modifier</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">higanbana_dot</span><span class="p">())</span>
-                                   <span class="o">+</span> <span class="n">buff_status</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># convert input text to lowercase, replace punctuation, and replace spaces with underscores</span>
-                <span class="n">parsed_ability</span> <span class="o">=</span> <span class="n">ability</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">translator</span><span class="p">)</span>
-
-                <span class="n">parsed_gcds</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_time</span><span class="p">,</span> <span class="n">weaponskill</span><span class="p">,</span> <span class="n">ability</span><span class="p">,</span> <span class="n">ws_potency</span>
-                                    <span class="o">+</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_ability</span><span class="p">)(</span><span class="n">n_targets</span><span class="p">)</span>
-                                    <span class="o">+</span> <span class="n">snapshot_dot_modifier</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">higanbana_dot</span><span class="p">())</span>
-                                   <span class="o">+</span> <span class="n">buff_status</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">parsed_ability</span> <span class="o">==</span> <span class="s1">&#39;meikyo_shisui&#39;</span><span class="p">:</span>
-                    <span class="c1"># allocate three weaponskills for Meikyo Shisui buff</span>
-                    <span class="n">meikyo_shisui_counter</span> <span class="o">=</span> <span class="mi">3</span>
-
-            <span class="c1"># update Higanbana DoT potency</span>
-            <span class="k">if</span> <span class="n">parsed_ws</span> <span class="o">==</span> <span class="s1">&#39;higanbana&#39;</span><span class="p">:</span>
                 <span class="c1"># add a target afflicted by Higanbana DoT</span>
                 <span class="n">n_applied_higanbana</span> <span class="o">+=</span> <span class="mi">1</span>
+                
+                <span class="c1"># Hissatsu: Kaiten applies to the DoT modifier                </span>
+                <span class="n">dot_mod</span> <span class="o">=</span> <span class="n">ws_mod</span><span class="o">*</span><span class="n">JINPU_MOD</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_jinpu</span> <span class="k">else</span> <span class="n">ws_mod</span>
 
                 <span class="k">if</span> <span class="n">n_targets</span> <span class="o">&gt;=</span> <span class="n">n_applied_higanbana</span><span class="p">:</span>
                     <span class="c1"># in this case, there are more total targets than those afflicted with Higanbana DoT</span>
                     <span class="c1"># snapshot buffs at time of DoT application and add to current DoT tick multiplier</span>
-                    <span class="n">snapshot_dot_modifier</span> <span class="o">+=</span> <span class="n">JINPU_MOD</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_jinpu</span> <span class="k">else</span> <span class="mf">1.0</span>
+                    <span class="n">snapshot_dot_modifier</span> <span class="o">+=</span> <span class="n">dot_mod</span>
 
                     <span class="c1"># update the number of targets afflicted by Higanbana DoT</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">applied_higanbana</span> <span class="o">=</span> <span class="n">n_applied_higanbana</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># in this case, all targets have been afflicted with Higanbana DoT</span>
-                    <span class="c1"># overwrite the DoT modifier due to clipping</span>
-                    <span class="n">snapshot_dot_modifier</span> <span class="o">=</span> <span class="n">JINPU_MOD</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_jinpu</span> <span class="k">else</span> <span class="mf">1.0</span>
+                    <span class="c1"># overwrite a DoT modifier due to clipping</span>
+                    <span class="n">snapshot_dot_modifier</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">dot_mod</span><span class="o">*</span><span class="n">n_targets</span><span class="p">,</span> <span class="c1"># upper limit</span>
+                                                <span class="n">snapshot_dot_modifier</span><span class="o">+</span><span class="n">dot_mod</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="c1"># overwrite unbuffed DoT</span>
+                                                <span class="n">snapshot_dot_modifier</span><span class="o">+</span><span class="n">dot_mod</span><span class="o">-</span><span class="mf">1.0</span><span class="o">*</span><span class="n">JINPU_MOD</span><span class="p">,</span> <span class="c1"># overwrite buffed DoTs</span>
+                                                <span class="n">snapshot_dot_modifier</span><span class="o">+</span><span class="n">dot_mod</span><span class="o">-</span><span class="mf">1.0</span><span class="o">*</span><span class="n">JINPU_MOD</span><span class="o">*</span><span class="n">KAITEN_MOD</span><span class="p">)</span>
 
                     <span class="c1"># max out the number of afflicted targets</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">applied_higanbana</span> <span class="o">=</span> <span class="n">n_targets</span>
+            
+            <span class="c1"># remove Hissatsu: Kaiten buff</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_hissatsu_kaiten</span> <span class="o">=</span> <span class="kc">False</span>
+            
+            <span class="c1"># parse abilities</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">abilities</span><span class="p">:</span>
+                <span class="c1"># no abilities used, use empty string to fill the ability value</span>
+                <span class="n">parsed_gcds</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_time</span><span class="p">,</span> <span class="n">weaponskill</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ws_potency</span>
+                                    <span class="o">+</span> <span class="n">snapshot_dot_modifier</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">higanbana_dot</span><span class="p">())</span>
+                                   <span class="o">+</span> <span class="n">buff_status</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># parse abilities used</span>
+                <span class="n">parsed_gcds</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_time</span><span class="p">,</span> <span class="n">weaponskill</span><span class="p">,</span> <span class="n">abilities</span><span class="p">,</span> <span class="n">ws_potency</span>
+                                    <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ability</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">translator</span><span class="p">))(</span><span class="n">n_targets</span><span class="p">)</span>
+                                           <span class="k">for</span> <span class="n">ability</span> <span class="ow">in</span> <span class="n">abilities</span><span class="p">])</span>
+                                    <span class="o">+</span> <span class="n">snapshot_dot_modifier</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">higanbana_dot</span><span class="p">())</span>
+                                   <span class="o">+</span> <span class="n">buff_status</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">ability</span> <span class="o">==</span> <span class="s1">&#39;Meikyo Shisui&#39;</span> <span class="k">for</span> <span class="n">ability</span> <span class="ow">in</span> <span class="n">abilities</span><span class="p">]):</span>
+                    <span class="c1"># allocate three weaponskills for Meikyo Shisui buff</span>
+                    <span class="n">meikyo_shisui_counter</span> <span class="o">=</span> <span class="mi">3</span>
 
             <span class="c1"># update counters</span>
             <span class="k">if</span> <span class="n">parsed_ws</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;higanbana&#39;</span><span class="p">,</span> <span class="s1">&#39;tenka goken&#39;</span><span class="p">,</span> <span class="s1">&#39;midare setsugekka&#39;</span><span class="p">]):</span>
@@ -255,7 +262,7 @@
 
         <span class="c1"># form output DataFrame and metrics</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">parsed_gcds</span><span class="p">,</span>
-                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="s1">&#39;Weaponskill&#39;</span><span class="p">,</span> <span class="s1">&#39;Ability&#39;</span><span class="p">,</span> <span class="s1">&#39;Potency&#39;</span><span class="p">,</span>
+                          <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Time&#39;</span><span class="p">,</span> <span class="s1">&#39;Weaponskill&#39;</span><span class="p">,</span> <span class="s1">&#39;Abilities&#39;</span><span class="p">,</span> <span class="s1">&#39;Potency&#39;</span><span class="p">,</span>
                                    <span class="s1">&#39;Jinpu&#39;</span><span class="p">,</span> <span class="s1">&#39;Shifu&#39;</span><span class="p">,</span> <span class="s1">&#39;Yukikaze&#39;</span><span class="p">,</span> <span class="s1">&#39;Higanbana&#39;</span><span class="p">,</span>
                                    <span class="s1">&#39;Kenki&#39;</span><span class="p">])</span>
         <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Total Potency&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Potency&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
